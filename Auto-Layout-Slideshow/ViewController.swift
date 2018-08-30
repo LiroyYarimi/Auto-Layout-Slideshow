@@ -8,6 +8,11 @@
 
 import UIKit
 
+extension UIColor {
+    static var mainPink = UIColor(red: 232/255, green: 68/255, blue: 133/255, alpha: 1)
+    static var lightPink = UIColor(red: 249/255, green: 207/255, blue: 224/255, alpha: 1)//pink gray color
+}
+
 class ViewController: UIViewController {
     
     //create a property with closure because we need to do more when we initialize
@@ -38,11 +43,41 @@ class ViewController: UIViewController {
         return textView
     }()
     
+    
+    private let previousButton : UIButton = {
+        let button = UIButton(type: .system)
+        button.setTitle("PREV", for: .normal)
+        button.translatesAutoresizingMaskIntoConstraints = false
+        button.titleLabel?.font = UIFont.boldSystemFont(ofSize: 14)
+        button.setTitleColor(.gray, for: .normal)
+        return button
+    }()
+    
+    private let NextButton : UIButton = {
+        let button = UIButton(type: .system)
+        button.setTitle("NEXT", for: .normal)
+        button.translatesAutoresizingMaskIntoConstraints = false
+        button.titleLabel?.font = UIFont.boldSystemFont(ofSize: 14)
+        //let pinkColor = UIColor(red: 232/255, green: 68/255, blue: 133/255, alpha: 1)
+        button.setTitleColor(.mainPink, for: .normal)
+        return button
+    }()
+    
+    private let pageControl : UIPageControl = {
+        let pc = UIPageControl()
+        pc.currentPage = 0
+        pc.numberOfPages = 4
+        pc.currentPageIndicatorTintColor = .mainPink
+        pc.pageIndicatorTintColor = .lightPink
+        return pc
+    }()
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
         //view.addSubview(bearImageView) //present bearImage on view
         view.addSubview(descriptionTextView)
+        setupButtonControls()
         setupLayout()
         
 
@@ -53,6 +88,38 @@ class ViewController: UIViewController {
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
+    }
+    
+    fileprivate func setupButtonControls() {
+        
+        
+        //view.addSubview(previousButton)
+        
+        
+//        let yellowView = UIView()
+//        yellowView.backgroundColor = .yellow
+//        let blueView = UIView()
+//        blueView.backgroundColor = .blue
+//        let greenView = UIView()
+//        greenView.backgroundColor = .green
+        
+        let buttonControlStackView = UIStackView(arrangedSubviews: [previousButton,pageControl,NextButton])
+        buttonControlStackView.translatesAutoresizingMaskIntoConstraints = false
+        buttonControlStackView.distribution = .fillEqually
+
+//        buttonControlStackView.axis = .vertical
+        view.addSubview(buttonControlStackView)
+        
+        //previousButton.frame = CGRect(x: 0, y: 0, width: 200, height: 50)
+        NSLayoutConstraint.activate([//with this way we dont need to write ".isActive = true" for every line
+//            previousButton.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),//for the nutch
+            buttonControlStackView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor),
+            buttonControlStackView.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor),//left side
+            buttonControlStackView.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor),//right side
+            buttonControlStackView.heightAnchor.constraint(equalToConstant: 50)
+            ])
+        
+        
     }
 
     private func setupLayout(){
