@@ -15,6 +15,7 @@ class ViewController: UIViewController {
         let imageView = UIImageView(image: #imageLiteral(resourceName: "bear_first")) //create bear image
         //this enables autolayout for our bearImage
         imageView.translatesAutoresizingMaskIntoConstraints = false
+        imageView.contentMode = .scaleAspectFit
         return imageView
     }() // this () is mean that we want to call the closure
     
@@ -50,8 +51,22 @@ class ViewController: UIViewController {
     }
 
     private func setupLayout(){
-        //this is the old way to do it.
-        //bearImage.frame = CGRect(x: 0, y: 100, width: 500, height: 500)
+        
+        let topImageContainerView = UIView()
+        topImageContainerView.backgroundColor = .blue
+        view.addSubview(topImageContainerView)
+        topImageContainerView.translatesAutoresizingMaskIntoConstraints = false //enable auto-layout
+        topImageContainerView.topAnchor.constraint(equalTo: view.topAnchor).isActive = true
+        topImageContainerView.heightAnchor.constraint(equalTo: view.heightAnchor, multiplier: 0.5).isActive = true
+        //topImageContainerView.leftAnchor.constraint(equalTo: view.leftAnchor).isActive = true
+        //topImageContainerView.rightAnchor.constraint(equalTo: view.rightAnchor).isActive = true
+        //this two lines is equal to leftAnchor & rightAnchor 
+        topImageContainerView.leadingAnchor.constraint(equalTo: view.leadingAnchor).isActive = true
+        topImageContainerView.trailingAnchor.constraint(equalTo: view.trailingAnchor).isActive = true
+        
+        
+        
+        //bearImage.frame = CGRect(x: 0, y: 100, width: 500, height: 500) //this is the old way to do it.
         
         bearImageView.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true //center vertical
         //        bearImage.centerYAnchor.constraint(equalTo: view.centerYAnchor).isActive = true //center horizontal
