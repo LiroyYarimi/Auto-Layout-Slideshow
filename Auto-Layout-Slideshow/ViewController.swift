@@ -76,7 +76,7 @@ class ViewController: UIViewController {
         super.viewDidLoad()
         
         //view.addSubview(bearImageView) //present bearImage on view
-        view.addSubview(descriptionTextView)
+        
         setupButtonControls()
         setupLayout()
         
@@ -142,6 +142,7 @@ class ViewController: UIViewController {
         bearImageView.heightAnchor.constraint(equalTo: topImageContainerView.heightAnchor, multiplier: 0.5).isActive = true
         
         
+        view.addSubview(descriptionTextView)
         descriptionTextView.topAnchor.constraint(equalTo: topImageContainerView.bottomAnchor).isActive = true
         //descriptionTextView.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
         descriptionTextView.leftAnchor.constraint(equalTo: view.leftAnchor,constant:24).isActive = true
