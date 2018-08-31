@@ -10,8 +10,23 @@ import UIKit
 
 class PageCell: UICollectionViewCell {
     
+    var page : Page?{
+        didSet{ //page equal to nil until it's set
+            
+            guard let unwrappedPage = page else { return } //if page is nil, we get out with return
+            
+            bearImageView.image = UIImage(named: unwrappedPage.imageName)
+            
+            let attrinutedText = NSMutableAttributedString(string: unwrappedPage.headerString, attributes: [NSAttributedStringKey.font : UIFont.boldSystemFont(ofSize: 18)])
+            attrinutedText.append(NSMutableAttributedString(string: "\n\n\n\(unwrappedPage.bodyText)", attributes: [NSAttributedStringKey.font : UIFont.systemFont(ofSize: 13), NSAttributedStringKey.foregroundColor : UIColor.gray]))
+            descriptionTextView.attributedText = attrinutedText
+            //every time we do .attributedText we need to center the text
+            descriptionTextView.textAlignment = .center
+        }
+    }
+    
     //create a property with closure because we need to do more when we initialize
-    let bearImageView : UIImageView = {
+    private let bearImageView : UIImageView = {
         let imageView = UIImageView(image: #imageLiteral(resourceName: "bear_first")) //create bear image
         //this enables autolayout for our bearImage
         imageView.translatesAutoresizingMaskIntoConstraints = false
@@ -19,7 +34,7 @@ class PageCell: UICollectionViewCell {
         return imageView
     }() // this () is mean that we want to call the closure
     
-    let descriptionTextView : UITextView = {
+    private let descriptionTextView : UITextView = {
         let textView = UITextView()
         
         let attributedText = NSMutableAttributedString(string: "Join us today in our fun and games!", attributes: [NSAttributedStringKey.font : UIFont.boldSystemFont(ofSize: 18)])
@@ -37,39 +52,11 @@ class PageCell: UICollectionViewCell {
         return textView
     }()
     
-    private let previousButton : UIButton = {
-        let button = UIButton(type: .system)
-        button.setTitle("PREV", for: .normal)
-        button.translatesAutoresizingMaskIntoConstraints = false
-        button.titleLabel?.font = UIFont.boldSystemFont(ofSize: 14)
-        button.setTitleColor(.gray, for: .normal)
-        return button
-    }()
-    
-    private let NextButton : UIButton = {
-        let button = UIButton(type: .system)
-        button.setTitle("NEXT", for: .normal)
-        button.translatesAutoresizingMaskIntoConstraints = false
-        button.titleLabel?.font = UIFont.boldSystemFont(ofSize: 14)
-        //let pinkColor = UIColor(red: 232/255, green: 68/255, blue: 133/255, alpha: 1)
-        button.setTitleColor(.mainPink, for: .normal)
-        return button
-    }()
-    
-    private let pageControl : UIPageControl = {
-        let pc = UIPageControl()
-        pc.currentPage = 0
-        pc.numberOfPages = 4
-        pc.currentPageIndicatorTintColor = .mainPink
-        pc.pageIndicatorTintColor = .lightPink
-        return pc
-    }()
     
     
     override init(frame: CGRect) {
         super .init(frame: frame)
         //backgroundColor = .yellow
-        setupButtonControls()
         setupLayout()
     }
     
@@ -105,35 +92,5 @@ class PageCell: UICollectionViewCell {
         
     }
     
-    fileprivate func setupButtonControls() {
-        
-        
-        //view.addSubview(previousButton)
-        
-        
-        //        let yellowView = UIView()
-        //        yellowView.backgroundColor = .yellow
-        //        let blueView = UIView()
-        //        blueView.backgroundColor = .blue
-        //        let greenView = UIView()
-        //        greenView.backgroundColor = .green
-        
-        let buttonControlStackView = UIStackView(arrangedSubviews: [previousButton,pageControl,NextButton])
-        buttonControlStackView.translatesAutoresizingMaskIntoConstraints = false
-        buttonControlStackView.distribution = .fillEqually
-        
-        //        buttonControlStackView.axis = .vertical
-        addSubview(buttonControlStackView)
-        
-        //previousButton.frame = CGRect(x: 0, y: 0, width: 200, height: 50)
-        NSLayoutConstraint.activate([//with this way we dont need to write ".isActive = true" for every line
-            //            previousButton.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),//for the nutch
-            buttonControlStackView.bottomAnchor.constraint(equalTo: safeAreaLayoutGuide.bottomAnchor),
-            buttonControlStackView.leadingAnchor.constraint(equalTo: safeAreaLayoutGuide.leadingAnchor),//left side
-            buttonControlStackView.trailingAnchor.constraint(equalTo: safeAreaLayoutGuide.trailingAnchor),//right side
-            buttonControlStackView.heightAnchor.constraint(equalToConstant: 50)
-            ])
-        
-        
-    }
+    
 }

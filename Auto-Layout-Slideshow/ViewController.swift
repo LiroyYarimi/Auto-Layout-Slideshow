@@ -115,7 +115,7 @@ class ViewController: UIViewController {
 //            previousButton.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),//for the nutch
             buttonControlStackView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor),
             buttonControlStackView.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor),//left side
-            buttonControlStackView.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor),//right side
+            buttonControlStackView.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor),//paright side
             buttonControlStackView.heightAnchor.constraint(equalToConstant: 50)
             ])
         
