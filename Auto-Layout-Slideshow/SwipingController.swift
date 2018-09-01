@@ -17,6 +17,10 @@ class SwipingController: UICollectionViewController , UICollectionViewDelegateFl
         Page(imageName: "bear_first", headerString: "Join us today in our fun and games!", bodyText: "Are you ready for loads and loads of fun? Don't wait any longer! We hope to see you in our store soon."),
         Page(imageName: "heart_second", headerString: "Subscribe and get coupons on our daily events", bodyText: "Get notified of the saving immediately when we announce them on our website. Make sure to also give us any feedback you have."),
         Page(imageName: "leaf_third", headerString: "VIP members special services", bodyText: "Join the private club of elite customers will get you into select drawing and giveaways.")
+        
+        ,Page(imageName: "bear_first", headerString: "Join us today in our fun and games!", bodyText: "Are you ready for loads and loads of fun? Don't wait any longer! We hope to see you in our store soon."),
+         Page(imageName: "heart_second", headerString: "Subscribe and get coupons on our daily events", bodyText: "Get notified of the saving immediately when we announce them on our website. Make sure to also give us any feedback you have."),
+         Page(imageName: "leaf_third", headerString: "VIP members special services", bodyText: "Join the private club of elite customers will get you into select drawing and giveaways.")
     ]
     
     private let previousButton : UIButton = {
@@ -64,6 +68,14 @@ class SwipingController: UICollectionViewController , UICollectionViewDelegateFl
         return pc
     }()
     
+    //what happen when user end scrolling - let's fix pageControl.currentPage. (velocity variable tell us how fast user scroll)
+    override func scrollViewWillEndDragging(_ scrollView: UIScrollView, withVelocity velocity: CGPoint, targetContentOffset: UnsafeMutablePointer<CGPoint>) {
+        
+        let x = targetContentOffset.pointee.x //x is equal to the end of the target cell (after user scrolling)
+        pageControl.currentPage = (Int)(x / view.frame.width)
+        
+    }
+    
     override func viewDidLoad() {
         super .viewDidLoad()
         
@@ -74,32 +86,32 @@ class SwipingController: UICollectionViewController , UICollectionViewDelegateFl
         collectionView?.isPagingEnabled = true
     }
     
+    //minimumLineSpacingForSectionAt - minimun space from each cell
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumLineSpacingForSectionAt section: Int) -> CGFloat {
         return 0
     }
     
+    //numberOfItemsInSection - number of item (tableview is row and collectionView is item)
     override func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         return pages.count
     }
     
+    //cellForItemAt - create cell
     override func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "cellId", for: indexPath) as! PageCell
-//        cell.backgroundColor = indexPath.item % 2 == 0 ? .red : .green
-//        cell.bearImageView.image = UIImage(named: imageName[indexPath.item])//it's override the bear image
-//        cell.descriptionTextView.text = headerString[indexPath.item]
-//        cell.bearImageView.image = UIImage(named: pages[indexPath.item].imageName)
-//        cell.descriptionTextView.text = pages[indexPath.item].headerString
         let newPage = pages[indexPath.item]
         cell.page = newPage //here we create a new page in PageCell class
         return cell
     }
     
+    //size of items (full screen)
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
         return CGSize(width: view.frame.width, height: view.frame.height)
     }
     
     fileprivate func setupButtonControls() {
         
+        //create stack view with three buttons
         let buttonControlStackView = UIStackView(arrangedSubviews: [previousButton,pageControl,NextButton])
         buttonControlStackView.translatesAutoresizingMaskIntoConstraints = false
         buttonControlStackView.distribution = .fillEqually
