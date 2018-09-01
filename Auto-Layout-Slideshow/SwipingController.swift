@@ -11,6 +11,26 @@ import UIKit
 
 class SwipingController: UICollectionViewController , UICollectionViewDelegateFlowLayout{
     
+    //this func call when the size of the view change (rotate left/right)
+    override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {
+
+        coordinator.animate(alongsideTransition: { (_) in
+            //this code will run when we rotate
+            
+            if self.pageControl.currentPage == 0{
+                self.collectionView?.contentOffset = .zero //fix the bug on the first page
+            }else{
+                self.collectionViewLayout.invalidateLayout()//like refresh
+                let indexPath = IndexPath(item: self.pageControl.currentPage, section: 0)//current page
+                self.collectionView?.scrollToItem(at: indexPath, at: .centeredHorizontally, animated: true)//put current page on the middle of the screen
+            }
+            
+            
+        }) { (_) in
+            
+        }
+    }
+    
 //    let imageName = ["bear_first","heart_second","leaf_third"]
 //    let headerString = ["Join us today in our fun and games!","Subscribe and get coupons on our daily events","VIP members special services"]
     let pages = [
