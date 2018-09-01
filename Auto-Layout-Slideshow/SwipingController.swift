@@ -11,37 +11,23 @@ import UIKit
 
 class SwipingController: UICollectionViewController , UICollectionViewDelegateFlowLayout{
     
-    //this func call when the size of the view change (rotate left/right)
-    override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {
 
-        coordinator.animate(alongsideTransition: { (_) in
-            //this code will run when we rotate
-            
-            if self.pageControl.currentPage == 0{
-                self.collectionView?.contentOffset = .zero //fix the bug on the first page
-            }else{
-                self.collectionViewLayout.invalidateLayout()//like refresh
-                let indexPath = IndexPath(item: self.pageControl.currentPage, section: 0)//current page
-                self.collectionView?.scrollToItem(at: indexPath, at: .centeredHorizontally, animated: true)//put current page on the middle of the screen
-            }
-            
-            
-        }) { (_) in
-            
-        }
-    }
     
-//    let imageName = ["bear_first","heart_second","leaf_third"]
-//    let headerString = ["Join us today in our fun and games!","Subscribe and get coupons on our daily events","VIP members special services"]
     let pages = [
         Page(imageName: "bear_first", headerString: "Join us today in our fun and games!", bodyText: "Are you ready for loads and loads of fun? Don't wait any longer! We hope to see you in our store soon."),
         Page(imageName: "heart_second", headerString: "Subscribe and get coupons on our daily events", bodyText: "Get notified of the saving immediately when we announce them on our website. Make sure to also give us any feedback you have."),
         Page(imageName: "leaf_third", headerString: "VIP members special services", bodyText: "Join the private club of elite customers will get you into select drawing and giveaways.")
-        
-        ,Page(imageName: "bear_first", headerString: "Join us today in our fun and games!", bodyText: "Are you ready for loads and loads of fun? Don't wait any longer! We hope to see you in our store soon."),
-         Page(imageName: "heart_second", headerString: "Subscribe and get coupons on our daily events", bodyText: "Get notified of the saving immediately when we announce them on our website. Make sure to also give us any feedback you have."),
-         Page(imageName: "leaf_third", headerString: "VIP members special services", bodyText: "Join the private club of elite customers will get you into select drawing and giveaways.")
     ]
+    
+    override func viewDidLoad() {
+        super .viewDidLoad()
+        
+        setupButtonControls()
+        
+        collectionView?.backgroundColor = .white
+        collectionView?.register(PageCell.self, forCellWithReuseIdentifier: "cellId")//decide cell as PageCell with identifier "cellId"
+        collectionView?.isPagingEnabled = true
+    }
     
     private let previousButton : UIButton = {
         let button = UIButton(type: .system)
@@ -88,24 +74,28 @@ class SwipingController: UICollectionViewController , UICollectionViewDelegateFl
         return pc
     }()
     
-    //what happen when user end scrolling - let's fix pageControl.currentPage. (velocity variable tell us how fast user scroll)
-    override func scrollViewWillEndDragging(_ scrollView: UIScrollView, withVelocity velocity: CGPoint, targetContentOffset: UnsafeMutablePointer<CGPoint>) {
+    fileprivate func setupButtonControls() {
         
-        let x = targetContentOffset.pointee.x //x is equal to the end of the target cell (after user scrolling)
-        pageControl.currentPage = (Int)(x / view.frame.width)
+        //create stack view with three buttons
+        let buttonControlStackView = UIStackView(arrangedSubviews: [previousButton,pageControl,NextButton])
+        buttonControlStackView.translatesAutoresizingMaskIntoConstraints = false
+        buttonControlStackView.distribution = .fillEqually
         
+        view.addSubview(buttonControlStackView)
+        
+        NSLayoutConstraint.activate([//with this way we dont need to write ".isActive = true" for every line
+            buttonControlStackView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor),
+            buttonControlStackView.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor),//left side
+            buttonControlStackView.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor),//right side
+            buttonControlStackView.heightAnchor.constraint(equalToConstant: 50)
+            ])
     }
+
     
-    override func viewDidLoad() {
-        super .viewDidLoad()
-        
-        setupButtonControls()
-        
-        collectionView?.backgroundColor = .white
-        collectionView?.register(PageCell.self, forCellWithReuseIdentifier: "cellId")//decide cell as PageCell with identifier "cellId"
-        collectionView?.isPagingEnabled = true
-    }
+
     
+    //MARK: - Collection View Functions
+
     //minimumLineSpacingForSectionAt - minimun space from each cell
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumLineSpacingForSectionAt section: Int) -> CGFloat {
         return 0
@@ -129,22 +119,28 @@ class SwipingController: UICollectionViewController , UICollectionViewDelegateFl
         return CGSize(width: view.frame.width, height: view.frame.height)
     }
     
-    fileprivate func setupButtonControls() {
+    //what happen when user end scrolling - let's fix pageControl.currentPage. (velocity variable tell us how fast user scroll)
+    override func scrollViewWillEndDragging(_ scrollView: UIScrollView, withVelocity velocity: CGPoint, targetContentOffset: UnsafeMutablePointer<CGPoint>) {
         
-        //create stack view with three buttons
-        let buttonControlStackView = UIStackView(arrangedSubviews: [previousButton,pageControl,NextButton])
-        buttonControlStackView.translatesAutoresizingMaskIntoConstraints = false
-        buttonControlStackView.distribution = .fillEqually
-        
-        view.addSubview(buttonControlStackView)
-        
-        NSLayoutConstraint.activate([//with this way we dont need to write ".isActive = true" for every line
-            buttonControlStackView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor),
-            buttonControlStackView.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor),//left side
-            buttonControlStackView.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor),//right side
-            buttonControlStackView.heightAnchor.constraint(equalToConstant: 50)
-            ])
-        
+        let x = targetContentOffset.pointee.x //x is equal to the end of the target cell (after user scrolling)
+        pageControl.currentPage = (Int)(x / view.frame.width)
         
     }
+    
+    //this func call when the size of the view change (rotate left/right)
+    override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {
+        
+        coordinator.animate(alongsideTransition: { (_) in
+            //this code will run when we rotate
+            
+            if self.pageControl.currentPage == 0{
+                self.collectionView?.contentOffset = .zero //fix the bug on the first page
+            }else{
+                self.collectionViewLayout.invalidateLayout()//like refresh
+                let indexPath = IndexPath(item: self.pageControl.currentPage, section: 0)//current page
+                self.collectionView?.scrollToItem(at: indexPath, at: .centeredHorizontally, animated: true)//put current page on the middle of the screen
+            }
+        })
+    }
+    
 }

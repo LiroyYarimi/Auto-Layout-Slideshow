@@ -41,6 +41,17 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		C878C60F213ABE6600ADD665 /* Supporting Files */ = {
+			isa = PBXGroup;
+			children = (
+				C8A961E721369A1A007C85DB /* Main.storyboard */,
+				C8A961EA21369A1C007C85DB /* Assets.xcassets */,
+				C8A961EC21369A1C007C85DB /* LaunchScreen.storyboard */,
+				C8A961EF21369A1C007C85DB /* Info.plist */,
+			);
+			path = "Supporting Files";
+			sourceTree = "<group>";
+		};
 		C8A961D721369A1A007C85DB = {
 			isa = PBXGroup;
 			children = (
@@ -63,12 +74,9 @@
 				C8A961E321369A1A007C85DB /* AppDelegate.swift */,
 				C8A961E521369A1A007C85DB /* ViewController.swift */,
 				C8A961F521382CF1007C85DB /* SwipingController.swift */,
-				C8A961E721369A1A007C85DB /* Main.storyboard */,
+				C878C60F213ABE6600ADD665 /* Supporting Files */,
 				C8A961F721383BDA007C85DB /* PageCell.swift */,
-				C8A961EA21369A1C007C85DB /* Assets.xcassets */,
-				C8A961EC21369A1C007C85DB /* LaunchScreen.storyboard */,
 				C8A961F9213985CB007C85DB /* Page.swift */,
-				C8A961EF21369A1C007C85DB /* Info.plist */,
 			);
 			path = "Auto-Layout-Slideshow";
 			sourceTree = "<group>";

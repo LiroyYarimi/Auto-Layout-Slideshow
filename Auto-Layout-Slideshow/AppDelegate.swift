@@ -19,7 +19,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         // this is how we build out our app in code
         window = UIWindow()
         window?.makeKeyAndVisible()
-        
 //        let randomViewController = UIViewController()
 //        randomViewController.view.backgroundColor = .purple
         let layout = UICollectionViewFlowLayout()

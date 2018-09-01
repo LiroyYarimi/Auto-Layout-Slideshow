@@ -38,13 +38,9 @@ class PageCell: UICollectionViewCell {
         let textView = UITextView()
         
         let attributedText = NSMutableAttributedString(string: "Join us today in our fun and games!", attributes: [NSAttributedStringKey.font : UIFont.boldSystemFont(ofSize: 18)])
-        
         attributedText.append(NSMutableAttributedString(string: "\n\n\nAre you ready for loads and loads of fun? Don't wait any longer! We hope to see you in our store soon.", attributes: [NSAttributedStringKey.font: UIFont.systemFont(ofSize: 13), NSAttributedStringKey.foregroundColor : UIColor.gray]))
         
         textView.attributedText = attributedText
-        
-        //textView.text = "Join us today in our fun and games!"
-        //textView.font = UIFont.boldSystemFont(ofSize: 18)
         textView.textAlignment = .center
         textView.isEditable = false
         textView.isScrollEnabled = false
@@ -56,7 +52,7 @@ class PageCell: UICollectionViewCell {
     
     override init(frame: CGRect) {
         super .init(frame: frame)
-        //backgroundColor = .yellow
+
         setupLayout()
     }
     
